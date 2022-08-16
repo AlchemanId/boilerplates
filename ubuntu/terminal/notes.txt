@@ -1,0 +1,94 @@
+vps.haikaru.com
+root/Haikaruvps1
+
+https://www.digitalocean.com/community/tutorials/how-to-use-certbot-standalone-mode-to-retrieve-let-s-encrypt-ssl-certificates-on-ubuntu-1804
+
+Check for open ports with ss command
+sudo ss -ltnp
+sudo ss -ltn
+
+Check for open ports with nmap
+nmap localhost
+
+Check what ports are open in ufw firewall
+sudo ufw status verbose
+
+Allowing Port in ubuntu firewall
+urw allow 80/tcp
+ufw allow 443
+
+Enable the firewall
+ufw enable
+
+How to inspect listening ports
+less /etc/services
+
+Check specific ports 80 443 22
+grep -we 80 -we 22 -we 443 /etc/services
+
+Inspect listening ports and socker information
+netstat -intu
+
+Reference Networking Ports
+https://bytexd.com/how-to-open-ports-in-ubuntu/
+
+Sample web docker
+docker run --name sampleASP --rm -it -p 8000:80 mcr.microsoft.com/dotnet/samples:aspnetapp
+docker run --name sampleASP --rm -it -p :80 mcr.microsoft.com/dotnet/samples:aspnetapp
+internal port 8000 external 80
+
+Remove package
+apt remove mosquitto mosquitto-clients
+
+List package Ubuntu
+apt list --installed
+
+Run emqx/emqx docker image
+docker run -d --name emqx -p 18083:18083 -p 1883:1883 emqx/emqx:latest
+user/pass:admin/public
+
+Run mysql
+docker pull mysql
+Ini gagal
+docker run --name mysqlVPS -e MYSQL_ROOT_PASSWORD=password -e MYSQL_USER=Haikaru -e MYSQL_PASSWORD=haikaru1 -d mysql:latest
+Ini OK
+docker run --name mysqlVPS -p 3306:3306 -e MYSQL_ROOT_PASSWORD=password -d mysql
+
+Run MongoDB
+docker run -d --rm --name mongocontainer -p 27017:27017 -v mongodbdata:/data/db mongo
+
+List Container Docker
+docker ps -a
+docker ps
+
+List Volume Docker
+docker volume ls
+
+Remove unUsed Volume
+docker volume prune
+
+reference docker remove
+https://www.hostinger.com/tutorials/docker-remove-all-images-tutorial/
+
+Filezilla server
+pass:Haikaruvps1
+
+Pull Image Portainer 
+docker pull portainer/portainer-ce:latest
+ce means community edition
+
+Portainer Volume
+docker volume create portainer_data
+
+Run Portainer
+docker run -d -p 8000:8000 -p 9443:9443 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
+use this for non ssl
+docker run -d -p 8000:8000 -p 9000:9000 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
+
+Portainer.io
+user/pass:haikaru/Haikaruvps11
+
+RabbitMQ Docker
+docker run -d --hostname myrabbit --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:latest -v rabbitmq:/var/lib/rabbitmq # ini gagal, simpen image di akhir
+seperti ini
+docker run -d --hostname rabbitmq --name myrabbit -p 5672:5672 -p 15672:15672 -v rabbitmqdata:/var/lib/rabbitmq rabbitmq:latest
