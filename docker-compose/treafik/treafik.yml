@@ -1,5 +1,7 @@
 # put this file in /etc/treafik/treafik.yml
 # treafik will automatically use this file as configuration
+# OMG.. 1 hour find the problem, why its not running
+# I miss type traefik with treafik int the config file naming and fill the file with /etc/treafik/treafik.yml
 
 global:
   checkNewVersion: true
@@ -21,8 +23,8 @@ global:
 # (Optional) Enable API and Dashboard
 # ---
 api:
- dashboard: true  # true by default
- insecure: true  # Don't do this in production!
+  dashboard: true  # true by default
+  insecure: true  # Don't do this in production!
 
 # Entry Points configuration
 # ---
