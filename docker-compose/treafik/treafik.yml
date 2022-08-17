@@ -1,8 +1,3 @@
-# put this file in /etc/treafik/treafik.yml
-# treafik will automatically use this file as configuration
-# OMG.. 1 hour find the problem, why its not running
-# I miss type traefik with treafik int the config file naming and fill the file with /etc/treafik/treafik.yml
-
 global:
   checkNewVersion: true
   sendAnonymousUsage: false  # true by default
@@ -24,7 +19,7 @@ global:
 # ---
 api:
   dashboard: true  # true by default
-  insecure: true  # Don't do this in production!
+  insecure: false  # Don't do this in production!
 
 # Entry Points configuration
 # ---
@@ -33,33 +28,32 @@ entryPoints:
     address: :80
     # (Optional) Redirect to HTTPS
     # ---
-    # http:
-    #   redirections:
-    #     entryPoint:
-    #       to: websecure
-    #       scheme: https
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
 
   websecure:
     address: :443
 
 # Configure your CertificateResolver here...
 # ---
-# certificatesResolvers:
-#   staging:
-#     acme:
-#       email: good.man.nanjung2@gmail.com
-#       storage: /etc/traefik/certs/acme.json
-#       caServer: "https://acme-staging-v02.api.letsencrypt.org/directory"
-#       httpChallenge:
-#         entryPoint: web
-#
-#   production:
-#     acme:
-#       email: good.man.nanjung2@gmail.com
-#       storage: /etc/traefik/certs/acme.json
-#       caServer: "https://acme-v02.api.letsencrypt.org/directory"
-#       httpChallenge:
-#         entryPoint: web
+certificatesResolvers:
+  staging:
+    acme:
+      email: good.man.nanjung2@gmail.com
+      storage: /etc/traefik/certs/acme.json
+      caServer: "https://acme-staging-v02.api.letsencrypt.org/directory"
+      httpChallenge:
+        entryPoint: web
+  production:
+    acme:
+      email: good.man.nanjung2@gmail.com
+      storage: /etc/traefik/certs/acme.json
+      caServer: "https://acme-v02.api.letsencrypt.org/directory"
+      httpChallenge:
+        entryPoint: web
 
 # (Optional) Overwrite Default Certificates
 # tls:
@@ -80,3 +74,14 @@ providers:
     # watch for dynamic configuration changes
     directory: /etc/traefik
     watch: true
+
+http:
+  routers:
+    traefik:
+      middlewares: "super-dashboard-auth"
+  middlewares:
+    super-dashboard-auth:
+      basicAuth:
+        removeHeader: true
+        users:
+          - "haikaru:$$apr1$$xtf8do7m$$Tm2hcxzV4NI9CNK9QXPUy0"
