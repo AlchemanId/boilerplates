@@ -1,0 +1,25 @@
+#docker run -d --rm --name mongocontainer -p 27017:27017 -v mongodbdata:/data/db mongo
+
+version: '3.8'
+    
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mymongo
+    volumes:
+      - "mongodbdata:/data/db"
+    port:
+      - "27017:27017"
+    labels:
+      # This label for setting router in traefik
+      - "traefik.enable=true"
+      - "traefik.http.routers.mongo.rule=Host(`mongo.haikaru.com`)"
+      - "traefik.http.routers.mongo.entrypoints=web,websecure"
+      - "traefik.http.services.mongo.loadbalancer.server.port=27017" 
+      - "traefik.http.routers.mongo.tls=true"
+      - "traefik.http.routers.mongo.tls.certResolver=production"
+
+volumes:
+  mongodbdata:
+    external: true
+    name: mongodbdata
