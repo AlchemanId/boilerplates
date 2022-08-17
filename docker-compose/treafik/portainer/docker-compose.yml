@@ -8,10 +8,18 @@ services:
       - "80:80"
       - "443:443"
       # (Optional) Expose Dashboard
-      - "8080:8080"  # Don't do this in production!
+      #- "8080:8080"  # Don't do this in production!
     volumes:
       - /etc/traefik:/etc/traefik
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro    
+    labels:
+      # This label for setting router in traefik
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.haikaru.com`)"
+      - "traefik.http.routers.traefik.entrypoints=web,websecure"
+      - "traefik.http.services.traefik.loadbalancer.server.port=8080" 
+      - "traefik.http.routers.traefik.tls=true"
+      - "traefik.http.routers.traefik.tls.certResolver=production"
     
   portainer:
     image: portainer/portainer-ce:latest
